@@ -1,5 +1,5 @@
 {
-    "compilerOptions": {
+    /*"compilerOptions": {
         "target": "es5",
         "module": "commonjs",
         "removeComments": true,
@@ -8,6 +8,22 @@
         "outDir": "./public/js",
         "esModuleInterop": true,
         "allowJs": true
+    },
+    */
+    "compilerOptions": {
+        "outDir": "./dist/",
+        "sourceMap": true,
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "module": "CommonJS", //esnext",
+        "target": "es2018",
+        "allowJs": true,
+        "moduleResolution": "node",
+        "strictFunctionTypes": true,
+        "strictPropertyInitialization": true,
+        "strictNullChecks": true,
+        "baseUrl": "./src",
     },
     "filesGlob": [
         "src/**/*.ts"

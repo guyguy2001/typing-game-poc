@@ -2,21 +2,18 @@
  * Created By Geani Pocroianu on 11/8/19 9:04 PM
  */
 
-import View = puremvc.View;
 import Container = PIXI.Container;
 import WebGLRenderer = PIXI.WebGLRenderer;
 import CanvasRenderer = PIXI.CanvasRenderer;
-import { Parameters } from '../static/parameters';
-import { SpineAnimationMediator } from '../mediators/spine-animation-mediator';
-import { SpineAnimationUiComponent } from '../ui-components/spine-animation-ui-component';
-import { MediatorNames } from '../static/names';
 
-import Player from './player';
+import { Parameters } from '../static/parameters';
+
+import Player from './objects/player';
 import Enemy from './enemy';
 import State from './state';
 import KeyboardManager from './keyboard-manager';
 
-export class MainView extends View {
+export class MainView {
   private _pixiStage!: Container;
   private _pixiRenderer!: WebGLRenderer | CanvasRenderer;
 
@@ -24,23 +21,13 @@ export class MainView extends View {
   private keyboardManager: KeyboardManager;
 
   /**
-   *
-   * @param key
-   */
-  static getInstance(key: string): MainView {
-    if (!View.instanceMap[key]) {
-      View.instanceMap[key] = new MainView(key);
-    }
-    return View.instanceMap[key] as MainView;
-  }
-
-  /**
    * @inheritDoc
    */
-  initializeView(): void {
-    super.initializeView();
+  constructor() {
+    this.state = new State();
+    this.keyboardManager = new KeyboardManager(this.state);
+
     this.createPixiApplication();
-    this.registerMediators();
     this.initializeGame();
     this.spawnEnemy();
     this.spawnEnemy();
@@ -48,25 +35,7 @@ export class MainView extends View {
     this.startRendering();
   }
 
-  protected registerMediators(): void {
-    let spineAnimationUiComponent: Container = new SpineAnimationUiComponent();
-    this.registerMediator(
-      new SpineAnimationMediator(
-        MediatorNames.SPINE_ANIMATION_MEDIATOR,
-        spineAnimationUiComponent
-      )
-    );
-    this.addUiComponent(spineAnimationUiComponent);
-  }
-
-  protected addUiComponent(uiComponent: Container): void {
-    this._pixiStage.addChild(uiComponent);
-  }
-
   private initializeGame() {
-    this.state = new State();
-    this.keyboardManager = new KeyboardManager(this.state);
-
     const player = new Player();
     this.state.player = player;
     player.position.set(
@@ -99,10 +68,12 @@ export class MainView extends View {
         this.state.selectedEnemy?.onDeselcted();
         action.enemy.onSelected();
         this.state.selectedEnemy = action.enemy;
-        this.state.isSelecting = true;
+        this.state.isSelecting = false;
         break;
       case 'start-select':
         this.state.isSelecting = true;
+        break;
+      case 'pause':
         break;
     }
   }

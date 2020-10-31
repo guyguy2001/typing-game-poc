@@ -149,7 +149,7 @@ declare module puremvc {
 
     export class View
         implements IView {
-        static instanceMap: Object;
+        static instanceMap: { [key: string]: View};
         static MULTITON_MSG: string;
         public mediatorMap: Object;
         public observerMap: Object;

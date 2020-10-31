@@ -2,20 +2,20 @@
  * Created By Geani Pocroianu on 11/6/19 8:35 PM
  */
 
-import {Keys} from "./modules/static/keys";
-import {MainFacade} from "./modules/facade/main-facade";
+import { Keys } from './modules/static/keys';
+import { MainFacade } from './modules/facade/main-facade';
+import { MainView } from './new/main-view';
 
 export class Main {
+  //private _facade: MainFacade;
 
-    private _facade: MainFacade;
-
-    constructor() {
-        this._facade = new MainFacade(Keys.FACADE_KEY);
-    }
-
+  constructor() {
+    //this._facade = new MainFacade(Keys.FACADE_KEY);
+    const test = new MainView();
+  }
 }
 
 // When the window loads, Main Object will be instantiated
 window.onload = () => {
-    new Main();
+  new Main();
 };
