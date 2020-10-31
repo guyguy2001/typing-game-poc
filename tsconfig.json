@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs",
+        "removeComments": true,
+        "sourceMap": true,
+        "watch": true,
+        "outDir": "./public/js",
+        "esModuleInterop": true,
+        "allowJs": true
+    },
+    "filesGlob": [
+        "src/**/*.ts"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}
