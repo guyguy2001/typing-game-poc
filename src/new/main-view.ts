@@ -9,9 +9,14 @@ import CanvasRenderer = PIXI.CanvasRenderer;
 import { Parameters } from '../static/parameters';
 
 import Player from './objects/player';
-import Enemy from './enemy';
+import Enemy from './objects/enemy';
 import State from './state';
 import KeyboardManager from './keyboard-manager';
+
+import EnemySelector from './enemy-selector';
+import InputConsumer from './input-consumer';
+import AbilityManager from './abilities-manager';
+import Attack from './attack';
 
 export class MainView {
   private _pixiStage!: Container;
@@ -20,12 +25,18 @@ export class MainView {
   private state: State;
   private keyboardManager: KeyboardManager;
 
+  consumers: InputConsumer[];
   /**
    * @inheritDoc
    */
   constructor() {
     this.state = new State();
     this.keyboardManager = new KeyboardManager(this.state);
+    this.consumers = [
+      new EnemySelector(this.state),
+      this.state.abilitiesManager
+    ]
+    this.state.abilitiesManager.addAbility(new Attack("j"))
 
     this.createPixiApplication();
     this.initializeGame();
@@ -44,14 +55,14 @@ export class MainView {
     );
     this._pixiStage.addChild(player);
 
-    document.addEventListener('keydown', (e) => this.onKeyDown(e));
+    document.addEventListener('keydown', e => this.onKeyDown(e));
   }
-
+  
   private spawnEnemy() {
-    const selectors = 'abcdefghijklmnopqrstuvwxyz'.split('');
-    const enemy = new Enemy(
-      selectors[Math.floor(Math.random() * selectors.length)]
-    );
+    console.log(this.state);
+    const selectorIndex = Math.floor(Math.random() * this.state.selectors.length);
+    const enemy = new Enemy(this.state.selectors[selectorIndex]);
+    this.state.selectors.splice(selectorIndex);
     enemy.position.set(
       Math.random() * this._pixiRenderer.width,
       Math.random() * this._pixiRenderer.height
@@ -62,6 +73,14 @@ export class MainView {
   }
 
   private onKeyDown(e: KeyboardEvent) {
+    for (const consumer of this.consumers) {
+      if (consumer.onInput(e.key)) {
+        break;
+      }
+    }
+  }
+
+  private _onKeyDown(e: KeyboardEvent) {
     const action = this.keyboardManager.handleKey(e.key);
     switch (action.action) {
       case 'select-enemy':

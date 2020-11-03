@@ -2,8 +2,6 @@
  * Created By Geani Pocroianu on 11/6/19 8:35 PM
  */
 
-import { Keys } from './modules/static/keys';
-import { MainFacade } from './modules/facade/main-facade';
 import { MainView } from './new/main-view';
 
 export class Main {
