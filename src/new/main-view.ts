@@ -62,7 +62,7 @@ export class MainView {
     console.log(this.state);
     const selectorIndex = Math.floor(Math.random() * this.state.selectors.length);
     const enemy = new Enemy(this.state.selectors[selectorIndex]);
-    this.state.selectors.splice(selectorIndex);
+    this.state.selectors.splice(selectorIndex, 1);
     enemy.position.set(
       Math.random() * this._pixiRenderer.width,
       Math.random() * this._pixiRenderer.height
