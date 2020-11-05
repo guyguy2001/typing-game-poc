@@ -36,7 +36,6 @@ export default class KeyboardManager {
       }
     } else {
     }
-    console.log(this.state);
     throw Error();
   }
 }

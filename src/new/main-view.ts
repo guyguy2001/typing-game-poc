@@ -17,13 +17,18 @@ import EnemySelector from './enemy-selector';
 import InputConsumer from './input-consumer';
 import AbilityManager from './abilities-manager';
 import Attack from './attack';
+import AttackIcon from './objects/attack-icon';
+import AttackIconsDiv from './objects/attack-icons-div';
+import { runInThisContext } from 'vm';
+import { Curse } from './attack';
 
 export class MainView {
-  private _pixiStage!: Container;
-  private _pixiRenderer!: WebGLRenderer | CanvasRenderer;
+  private _pixiStage: Container;
+  private _pixiRenderer: WebGLRenderer | CanvasRenderer;
 
   private state: State;
   private keyboardManager: KeyboardManager;
+  private iconDiv: AttackIconsDiv;
 
   consumers: InputConsumer[];
   /**
@@ -32,11 +37,25 @@ export class MainView {
   constructor() {
     this.state = new State();
     this.keyboardManager = new KeyboardManager(this.state);
+
+    this._pixiRenderer = PIXI.autoDetectRenderer(
+      window.innerWidth,
+      window.innerHeight,
+      Parameters.PIXI_APPLICATION_SETTINGS
+    );
+    document.body.appendChild(this._pixiRenderer.view);
+    this._pixiStage = new PIXI.Container();
+
+    this.iconDiv = new AttackIconsDiv();
+    this.iconDiv.position.set(this._pixiRenderer.width / 5, this._pixiRenderer.height * 0.8);
+    this._pixiStage.addChild(this.iconDiv);
+    this.state.abilitiesManager.addGameListener('onAttackAdded', attack => this.iconDiv.addAbilityIcon(attack));
     this.consumers = [
       new EnemySelector(this.state),
       this.state.abilitiesManager
     ]
     this.state.abilitiesManager.addAbility(new Attack("j"))
+    this.state.abilitiesManager.addAbility(new Curse("k"))
 
     this.createPixiApplication();
     this.initializeGame();
@@ -59,7 +78,6 @@ export class MainView {
   }
   
   private spawnEnemy() {
-    console.log(this.state);
     const selectorIndex = Math.floor(Math.random() * this.state.selectors.length);
     const enemy = new Enemy(this.state.selectors[selectorIndex]);
     this.state.selectors.splice(selectorIndex, 1);
@@ -68,7 +86,6 @@ export class MainView {
       Math.random() * this._pixiRenderer.height
     );
     this._pixiStage.addChild(enemy);
-    console.log(this.state);
     this.state.enemyManager.addEnemy(enemy);
   }
 
@@ -101,15 +118,6 @@ export class MainView {
    * Creates the PIXI Application
    */
   protected createPixiApplication(): void {
-    this._pixiRenderer = PIXI.autoDetectRenderer(
-      window.innerWidth,
-      window.innerHeight,
-      Parameters.PIXI_APPLICATION_SETTINGS
-    );
-    document.body.appendChild(this._pixiRenderer.view);
-
-    // create the root of the scene graph
-    this._pixiStage = new PIXI.Container();
   }
 
   /**

@@ -49,7 +49,6 @@ export default class Enemy extends PIXI.Graphics {
   }
 
   onDeselcted() {
-    console.log("onDeselected")
     this._fill = REGULAR_FILL;
     this.redraw();
   }

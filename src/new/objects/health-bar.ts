@@ -27,7 +27,6 @@ export default class HealthBar extends PIXI.Graphics {
   redraw() {
     this.clear();
     this.beginFill(this.backgroundFill);
-    console.log({width: this._width})
     this.drawRect(0, 0, this._width, HEALTHBAR_HEIGHT);
     this.beginFill(this.foregroundFill);
     this.drawRect(0, 0, this._width * this.hp / this.maxHp, HEALTHBAR_HEIGHT);
@@ -40,7 +39,6 @@ export default class HealthBar extends PIXI.Graphics {
 //   }
 
 //   onDeselcted() {
-//     console.log("onDeselected")
 //     this._fill = REGULAR_FILL;
 //     this.redraw();
 //   }
