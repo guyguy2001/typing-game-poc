@@ -15,12 +15,16 @@ import KeyboardManager from './keyboard-manager';
 
 import EnemySelector from './enemy-selector';
 import InputConsumer from './input-consumer';
-import AbilityManager from './abilities-manager';
 import Attack from './attack';
-import AttackIcon from './objects/attack-icon';
 import AttackIconsDiv from './objects/attack-icons-div';
-import { runInThisContext } from 'vm';
 import { Curse } from './attack';
+import textureManager from './texture-manager';
+
+export const renderer = PIXI.autoDetectRenderer(
+  window.innerWidth,
+  window.innerHeight,
+  Parameters.PIXI_APPLICATION_SETTINGS
+);
 
 export class MainView {
   private _pixiStage: Container;
@@ -29,6 +33,7 @@ export class MainView {
   private state: State;
   private keyboardManager: KeyboardManager;
   private iconDiv: AttackIconsDiv;
+  private textureManager = textureManager;
 
   consumers: InputConsumer[];
   /**
@@ -38,24 +43,29 @@ export class MainView {
     this.state = new State();
     this.keyboardManager = new KeyboardManager(this.state);
 
-    this._pixiRenderer = PIXI.autoDetectRenderer(
-      window.innerWidth,
-      window.innerHeight,
-      Parameters.PIXI_APPLICATION_SETTINGS
-    );
+    this._pixiRenderer = renderer;
     document.body.appendChild(this._pixiRenderer.view);
     this._pixiStage = new PIXI.Container();
 
     this.iconDiv = new AttackIconsDiv();
-    this.iconDiv.position.set(this._pixiRenderer.width / 5, this._pixiRenderer.height * 0.8);
+    this.iconDiv.position.set(
+      this._pixiRenderer.width / 5,
+      this._pixiRenderer.height * 0.8
+    );
     this._pixiStage.addChild(this.iconDiv);
-    this.state.abilitiesManager.addGameListener('onAttackAdded', attack => this.iconDiv.addAbilityIcon(attack));
+    this.state.abilitiesManager.addGameListener('onAttackAdded', attack =>
+      this.iconDiv.addAbilityIcon(attack)
+    );
     this.consumers = [
       new EnemySelector(this.state),
-      this.state.abilitiesManager
-    ]
-    this.state.abilitiesManager.addAbility(new Attack("j"))
-    this.state.abilitiesManager.addAbility(new Curse("k"))
+      this.state.abilitiesManager,
+    ];
+
+    this.textureManager.loadTexture('firebolt', 'assets/FireBolt.png');
+    this.textureManager.loadTexture('death-coil', 'assets/DeathCoil.png');
+
+    this.state.abilitiesManager.addAbility(new Attack('j'));
+    this.state.abilitiesManager.addAbility(new Curse('k'));
 
     this.createPixiApplication();
     this.initializeGame();
@@ -76,9 +86,11 @@ export class MainView {
 
     document.addEventListener('keydown', e => this.onKeyDown(e));
   }
-  
+
   private spawnEnemy() {
-    const selectorIndex = Math.floor(Math.random() * this.state.selectors.length);
+    const selectorIndex = Math.floor(
+      Math.random() * this.state.selectors.length
+    );
     const enemy = new Enemy(this.state.selectors[selectorIndex]);
     this.state.selectors.splice(selectorIndex, 1);
     enemy.position.set(
@@ -117,8 +129,7 @@ export class MainView {
   /**
    * Creates the PIXI Application
    */
-  protected createPixiApplication(): void {
-  }
+  protected createPixiApplication(): void {}
 
   /**
    * Starts the rendering process of the PIXI Application
@@ -126,6 +137,7 @@ export class MainView {
   protected startRendering(): void {
     let animate = () => {
       this._pixiRenderer.render(this._pixiStage);
+      this.iconDiv.redraw();
       requestAnimationFrame(animate);
     };
 

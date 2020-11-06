@@ -1,29 +1,43 @@
+import Attack from '../attack';
+import textureManager from '../texture-manager';
+import AttackIconCooldown from './attack-cooldown';
 
-const REGULAR_FILL = 0x444444;
-
-const ICON_SIZE = 50;
+export const ICON_SIZE = 60;
 // const TEXT_POSITION = ICON_SIZE / 8;
+import { renderer } from '../main-view';
 
-export default class AttackIcon extends PIXI.Graphics {
+function p<T>(t: T) {
+  console.log(t);
+  return t;
+}
+export default class AttackIcon extends PIXI.Sprite {
   textObject: PIXI.Text;
-  _fill: number = REGULAR_FILL;
+  cooldownObject: AttackIconCooldown;
+  public _width = ICON_SIZE;
 
-  constructor(public key: string) {
-    super();
-    this.textObject = new PIXI.Text(key, { fill: 0xffffff });
-    this.textObject.position.set(ICON_SIZE / 8, 0)
+  constructor(public attack: Attack) {
+    super(p(textureManager.getTexture(attack.icon)));
+    console.log(this.texture);
+    this.textObject = new PIXI.Text(attack.key, { fill: 0xffffff });
+    this.textObject.position.set(ICON_SIZE / 8, 0);
     this.addChild(this.textObject);
+
+    this.cooldownObject = new AttackIconCooldown(attack);
+    // this.cooldownObject.position.set(this.position.x, this.position.y);
+    this.cooldownObject.redraw();
+    this.addChild(this.cooldownObject);
+
+    this.width = ICON_SIZE;
+    this.height = ICON_SIZE;
+
+    // setTimeout(() => {
+    //   this.parent.addChild(mask as PIXI.Sprite);
+    // }, 1000);
     this.redraw();
   }
 
   redraw() {
-    this.clear();
-    this.beginFill(this._fill);
-    this.drawRect(0, 0, ICON_SIZE, ICON_SIZE);
-    this.endFill();
-
-    // this.textObject.anchor.x = 0.5;
-    // this.textObject.anchor.y = 0.5;
-    this.textObject.position.set(0, 0); //this.width / 2, this.height / 2);
+    this.cooldownObject.redraw();
+    // (this.mask as PIXI.Sprite).texture =
   }
 }
