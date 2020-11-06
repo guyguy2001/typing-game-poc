@@ -15,10 +15,10 @@ export default class AttackIconCooldown extends PIXI.Graphics {
   constructor(private attack: Attack) {
     super();
     this.redraw();
-    const N = 16;
   }
 
   redraw() {
+    // TODO: Just draw part of a circle and apply it as an alpha mask
     this.clear();
     const cooldownPart = this.attack.canAttack
       ? 0

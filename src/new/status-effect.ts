@@ -1,5 +1,6 @@
-import Enemy from "./objects/enemy";
+import Enemy from './objects/enemy';
 
-export default class StatusEffect {
-    constructor(protected enemy: Enemy) {}    
+export default abstract class StatusEffect {
+  abstract name: string;
+  constructor(protected enemy: Enemy) {}
 }

@@ -15,7 +15,7 @@ import KeyboardManager from './keyboard-manager';
 
 import EnemySelector from './enemy-selector';
 import InputConsumer from './input-consumer';
-import Attack from './attack';
+import Attack, { Firebolt } from './attack';
 import AttackIconsDiv from './objects/attack-icons-div';
 import { Curse } from './attack';
 import textureManager from './texture-manager';
@@ -64,7 +64,7 @@ export class MainView {
     this.textureManager.loadTexture('firebolt', 'assets/FireBolt.png');
     this.textureManager.loadTexture('death-coil', 'assets/DeathCoil.png');
 
-    this.state.abilitiesManager.addAbility(new Attack('j'));
+    this.state.abilitiesManager.addAbility(new Firebolt('j'));
     this.state.abilitiesManager.addAbility(new Curse('k'));
 
     this.createPixiApplication();
