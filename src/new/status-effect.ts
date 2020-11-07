@@ -1,6 +1,13 @@
+import GameObject, { EventsDict } from './game-object';
 import Enemy from './objects/enemy';
 
-export default abstract class StatusEffect {
+type T = {
+  onStop: (() => void)[];
+};
+export default abstract class StatusEffect extends GameObject<T> {
   abstract name: string;
-  constructor(protected enemy: Enemy) {}
+
+  abstract start(enemy: Enemy): void;
+  abstract stop(): void;
+  addGameListener(event: 'onStop', cb: () => void): void;
 }

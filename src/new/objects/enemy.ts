@@ -1,4 +1,5 @@
 import StatusEffect from '../status-effect';
+import StatusEffectManager from '../status-effects-manager';
 import Healthbar from './health-bar';
 
 const REGULAR_FILL = 0x444444;
@@ -14,6 +15,7 @@ export default class Enemy extends PIXI.Graphics {
   healthBar: Healthbar;
   _fill: number = REGULAR_FILL;
   isDead = false;
+  statusEffects = new StatusEffectManager();
 
   private _hp: number = ENEMY_MAX_HP;
 
@@ -24,8 +26,6 @@ export default class Enemy extends PIXI.Graphics {
     this._hp = value;
     this.healthBar.hp = value;
   }
-
-  statusEffects: StatusEffect[] = [];
 
   constructor(public selector: string) {
     super();
@@ -82,6 +82,6 @@ export default class Enemy extends PIXI.Graphics {
   }
 
   addStatusEffect(statusEffect: StatusEffect) {
-    this.statusEffects;
+    this.statusEffects.addStatusEffect(statusEffect);
   }
 }

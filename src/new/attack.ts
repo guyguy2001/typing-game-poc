@@ -37,16 +37,22 @@ export class Curse extends Attack {
 
 class CurseStatusEffect extends StatusEffect {
   name = 'curse';
-  constructor(enemy: Enemy) {
-    super(enemy);
+  interval?: NodeJS.Timeout;
+  start(enemy: Enemy) {
     let ticks = 0;
-    const interval = setInterval(() => {
+    this.interval = setInterval(() => {
       if (ticks === 3 || enemy.isDead) {
-        clearInterval(interval);
+        this.stop();
         return;
       }
       enemy.damage(5);
       ticks++;
     }, 1000);
   }
+  stop() {
+    if (this.interval !== undefined) {
+      clearInterval(this.interval);
+    }
+  }
+  addGameListener() {}
 }
