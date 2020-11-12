@@ -83,5 +83,6 @@ export default class Enemy extends PIXI.Graphics {
 
   addStatusEffect(statusEffect: StatusEffect) {
     this.statusEffects.addStatusEffect(statusEffect);
+    statusEffect.start(this);
   }
 }

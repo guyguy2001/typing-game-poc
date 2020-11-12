@@ -31,7 +31,7 @@ export class Curse extends Attack {
 
   public attack(enemy: Enemy) {
     super.attack(enemy);
-    enemy.addStatusEffect(new CurseStatusEffect(enemy));
+    enemy.addStatusEffect(new CurseStatusEffect());
   }
 }
 

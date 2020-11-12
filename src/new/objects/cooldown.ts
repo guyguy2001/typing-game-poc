@@ -1,39 +1,23 @@
-import Attack from '../attack';
-
 const FILL = 0x000000;
-import { ICON_SIZE } from './attack-icon';
-import { renderer } from '../main-view';
 
-export default class AttackIconCooldown extends PIXI.Graphics {
+export default class Cooldown extends PIXI.Graphics {
   _fill: number = FILL;
-  public renderTexture = PIXI.RenderTexture.create(
-    ICON_SIZE,
-    ICON_SIZE,
-    PIXI.SCALE_MODES.LINEAR
-  );
 
-  constructor(private attack: Attack) {
+  constructor(private icon_size: number) {
     super();
-    this.redraw();
   }
 
-  redraw() {
+  redraw(cooldownPart: number) {
     // TODO: Just draw part of a circle and apply it as an alpha mask
     this.clear();
-    const cooldownPart = this.attack.canAttack
-      ? 0
-      : (this.attack.cooldown -
-          (new Date().getTime() - this.attack.lastAttackedTime!)) /
-        this.attack.cooldown;
 
-    const shape = AttackIconCooldown.generateShape(cooldownPart).map(
-      p => new PIXI.Point((p.x + 0.5) * ICON_SIZE, (p.y + 0.5) * ICON_SIZE)
+    const shape = Cooldown.generateShape(cooldownPart).map(
+      p => new PIXI.Point((p.x + 0.5) * this.icon_size, (p.y + 0.5) * this.icon_size)
     );
 
     this.beginFill(FILL, 0.4);
     this.drawPolygon(shape);
     this.endFill();
-    renderer.render(this, this.renderTexture);
   }
 
   static generateShape(cooldown: number) {

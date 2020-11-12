@@ -1,24 +1,15 @@
 export type EventsDict = {
   [eventName: string]: Function[];
 };
-export type ED<E, F> {
-  [K: keyof E]: F<K>
-}
-export default class GameObject<E extends EventsDict> {
-  eventHandlers: E = {} as E;
-  addGameListener(event: keyof E, cb: E[typeof event][0]) {
-    if (!(event in this.eventHandlers)) {
+// export type ED<E, F> {
+//   [K: keyof E]: F<K>
+// }
+export default class GameObject {
+  eventHandlers: EventsDict = {} as EventsDict;
+  addGameListener(event: string, cb: Function) {
+    if (this.eventHandlers[event] === undefined) {
       this.eventHandlers[event] = [];
     }
-    this.eventHandlers[event]?.push(cb);
+    this.eventHandlers[event].push(cb);
   }
-}
-
-
-class Test {
-  a: any;
-}
-
-class B extends Test {
-  a: string;
 }
