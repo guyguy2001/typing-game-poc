@@ -1,16 +1,14 @@
-import Enemy from './objects/enemy'
+import Enemy from './objects/enemy';
 import State from './state';
 
 export default class EnemyManager {
   enemies: Enemy[] = [];
-  enemiesBySelector: { [selector: string]: Enemy } = {}
+  enemiesBySelector: { [selector: string]: Enemy } = {};
   //selectors: string[]
-  constructor(private state: State){
+  constructor(private state: State) {}
 
-  }
-  
   addEnemy(enemy: Enemy) {
-    enemy.addGameListener('onDeath', enemy => this.removeEnemy(enemy));
+    enemy.emitter.on('onDeath', enemy => this.removeEnemy(enemy));
     this.enemies.push(enemy);
     this.enemiesBySelector[enemy.selector] = enemy;
   }

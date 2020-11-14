@@ -1,16 +1,18 @@
-import GameObject, { EventsDict } from './game-object';
+import Emitter from './event-emitter';
 import Enemy from './objects/enemy';
 
-type T = {
-  onStop: (() => void)[];
+type Events = {
+  onStop: StatusEffect;
 };
-export default abstract class StatusEffect extends GameObject {
+
+export default abstract class StatusEffect {
   abstract name: string;
 
+  emitter = new Emitter<Events>();
+
   abstract start(enemy: Enemy): void;
+
   stop() {
-    for(const f of this.eventHandlers['onStop']) {
-      f(this);
-    }
-  };
+    this.emitter.emit('onStop', this);
+  }
 }

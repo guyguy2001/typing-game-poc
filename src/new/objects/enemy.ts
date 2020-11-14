@@ -1,3 +1,4 @@
+import Emitter from '../event-emitter';
 import StatusEffect from '../status-effect';
 import StatusEffectManager from '../status-effects-manager';
 import Healthbar from './health-bar';
@@ -8,7 +9,10 @@ const SELECTED_FILL = 0x329e2e;
 const ENEMY_SIZE = 50;
 const ENEMY_MAX_HP = 100;
 
-type CallbackType = 'onDeath' | 'test';
+type Events = {
+  onDeath: Enemy;
+  onStatusEffectApplied: [StatusEffect, Enemy];
+};
 
 export default class Enemy extends PIXI.Graphics {
   textObject: PIXI.Text;
@@ -17,6 +21,7 @@ export default class Enemy extends PIXI.Graphics {
   isDead = false;
   statusEffects = new StatusEffectManager();
 
+  public emitter = new Emitter<Events>();
   private _hp: number = ENEMY_MAX_HP;
 
   get hp() {
@@ -66,23 +71,14 @@ export default class Enemy extends PIXI.Graphics {
     }
   }
 
-  callbacks: Map<CallbackType, ((enemy: this) => void)[]> = new Map();
-  addGameListener(type: 'onDeath', cb: (enemy: this) => void) {
-    if (!this.callbacks.has('onDeath')) {
-      this.callbacks.set('onDeath', []);
-    }
-    this.callbacks.get('onDeath')!.push(cb);
-  }
-
   onDeath() {
-    this.callbacks.get('onDeath')?.forEach(cb => {
-      cb(this);
-    });
+    this.emitter.emit('onDeath', this);
     this.isDead = true;
   }
 
   addStatusEffect(statusEffect: StatusEffect) {
     this.statusEffects.addStatusEffect(statusEffect);
     statusEffect.start(this);
+    this.emitter.emit('onStatusEffectApplied', [statusEffect, this]);
   }
 }

@@ -1,4 +1,4 @@
-import Attack from '../attack';
+import StatusEffect from '../status-effect';
 import textureManager from '../texture-manager';
 import Cooldown from './cooldown';
 
@@ -9,10 +9,10 @@ export default class AttackIcon extends PIXI.Sprite {
   cooldownObject: Cooldown;
   public _width = ICON_SIZE;
 
-  constructor(public attack: Attack) {
-    super(textureManager.getTexture(attack.icon));
+  constructor(public statusEffect: StatusEffect) {
+    super(textureManager.getTexture(statusEffect.icon));
 
-    this.textObject = new PIXI.Text(attack.key, { fill: 0xffffff });
+    this.textObject = new PIXI.Text(statusEffect.key, { fill: 0xffffff });
     this.textObject.position.set(ICON_SIZE / 8, 0);
     this.addChild(this.textObject);
 
@@ -26,11 +26,10 @@ export default class AttackIcon extends PIXI.Sprite {
   }
 
   redraw() {
-    const cooldownPart = this.attack.canAttack
-      ? 0
-      : (this.attack.cooldown -
-          (new Date().getTime() - this.attack.lastAttackedTime!)) /
-        this.attack.cooldown;
+    const cooldownPart =
+      (this.statusEffect.cooldown -
+        (new Date().getTime() - this.statusEffect.lastAttackedTime!)) /
+      this.statusEffect.cooldown;
     this.cooldownObject.redraw(cooldownPart);
   }
 }
