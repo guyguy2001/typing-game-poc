@@ -1,4 +1,3 @@
-import { stat } from 'fs';
 import Emitter from './event-emitter';
 import Enemy from './objects/enemy';
 import StatusEffect from './status-effect';
@@ -12,12 +11,24 @@ export default class StatusEffectManager {
   statusEffectsByName: { [name: string]: StatusEffect } = {};
   emitter = new Emitter<Events>();
 
+  constructor(private enemy: Enemy) {}
+  
   addStatusEffect(statusEffect: StatusEffect) {
-    this.statusEffectsStack.push(statusEffect);
-    this.statusEffectsByName[statusEffect.name] = statusEffect;
-    statusEffect.emitter.on('onStop', (status: StatusEffect) =>
-      this.removeStatusEffect(status)
-    );
+    if (this.statusEffectsByName[statusEffect.name] === undefined) {
+      console.log('if');
+      this.statusEffectsStack.push(statusEffect);
+      this.statusEffectsByName[statusEffect.name] = statusEffect;
+      statusEffect.emitter.on('onStop', (status: StatusEffect) =>
+        this.removeStatusEffect(status)
+      );
+      statusEffect.start(this.enemy);
+      console.log('START');
+    }
+    else {
+      console.log('else');
+      const existingStatusEffect = this.statusEffectsByName[statusEffect.name];
+      existingStatusEffect.reapply();
+    }
   }
 
   cureStatusEffect(statusEffect: StatusEffect) {

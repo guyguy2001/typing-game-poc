@@ -19,7 +19,7 @@ export default class Enemy extends PIXI.Graphics {
   healthBar: Healthbar;
   _fill: number = REGULAR_FILL;
   isDead = false;
-  statusEffects = new StatusEffectManager();
+  statusEffects = new StatusEffectManager(this);
 
   public emitter = new Emitter<Events>();
   private _hp: number = ENEMY_MAX_HP;
@@ -78,7 +78,5 @@ export default class Enemy extends PIXI.Graphics {
 
   addStatusEffect(statusEffect: StatusEffect) {
     this.statusEffects.addStatusEffect(statusEffect);
-    statusEffect.start(this);
-    this.emitter.emit('onStatusEffectApplied', [statusEffect, this]);
   }
 }
