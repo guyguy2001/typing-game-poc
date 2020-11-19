@@ -138,6 +138,7 @@ export class MainView {
     let animate = () => {
       this._pixiRenderer.render(this._pixiStage);
       this.iconDiv.redraw();
+      this.state.enemyManager.enemies.forEach(enemy => enemy.redraw());
       requestAnimationFrame(animate);
     };
 

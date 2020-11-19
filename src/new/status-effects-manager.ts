@@ -3,6 +3,8 @@ import Enemy from './objects/enemy';
 import StatusEffect from './status-effect';
 
 type Events = {
+  onEffectStarted: StatusEffect;
+  onEffectReapplied: StatusEffect;
   onEffectEnded: StatusEffect;
 };
 
@@ -15,19 +17,18 @@ export default class StatusEffectManager {
   
   addStatusEffect(statusEffect: StatusEffect) {
     if (this.statusEffectsByName[statusEffect.name] === undefined) {
-      console.log('if');
       this.statusEffectsStack.push(statusEffect);
       this.statusEffectsByName[statusEffect.name] = statusEffect;
       statusEffect.emitter.on('onStop', (status: StatusEffect) =>
         this.removeStatusEffect(status)
       );
       statusEffect.start(this.enemy);
-      console.log('START');
+      this.emitter.emit('onEffectStarted', statusEffect);
     }
     else {
-      console.log('else');
       const existingStatusEffect = this.statusEffectsByName[statusEffect.name];
       existingStatusEffect.reapply();
+      this.emitter.emit('onEffectReapplied', statusEffect);
     }
   }
 
