@@ -1,7 +1,9 @@
 import Emitter from '../event-emitter';
 import StatusEffect from '../status-effect';
 import StatusEffectManager from '../status-effects-manager';
+import { STATUS_EFFECT_ICON_SIZE } from './status-effect-icon';
 import Healthbar from './health-bar';
+import StatusEffectsBar from './status-effects-bar';
 
 const REGULAR_FILL = 0x444444;
 const SELECTED_FILL = 0x329e2e;
@@ -17,6 +19,7 @@ type Events = {
 export default class Enemy extends PIXI.Graphics {
   textObject: PIXI.Text;
   healthBar: Healthbar;
+  statusEffectsBar: StatusEffectsBar;
   _fill: number = REGULAR_FILL;
   isDead = false;
   statusEffects = new StatusEffectManager(this);
@@ -36,9 +39,14 @@ export default class Enemy extends PIXI.Graphics {
     super();
     this.textObject = new PIXI.Text(selector, { fill: 0xffffff });
     this.addChild(this.textObject);
+
     this.healthBar = new Healthbar(ENEMY_SIZE * 2, ENEMY_MAX_HP);
     this.healthBar.position.set(-ENEMY_SIZE, -ENEMY_SIZE * 1.5);
     this.addChild(this.healthBar);
+
+    this.statusEffectsBar = new StatusEffectsBar(this.statusEffects);
+    this.statusEffectsBar.position.set(this.healthBar.position.x, this.healthBar.position.y - STATUS_EFFECT_ICON_SIZE * 1.25);
+    this.addChild(this.statusEffectsBar);
     this.redraw();
   }
 
@@ -52,6 +60,8 @@ export default class Enemy extends PIXI.Graphics {
     this.textObject.anchor.x = 0.5;
     this.textObject.anchor.y = 0.5;
     this.textObject.position.set(0, 0); //this.width / 2, this.height / 2);
+
+    this.statusEffectsBar.redraw();
   }
 
   onSelected() {

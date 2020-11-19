@@ -40,7 +40,7 @@ class CurseStatusEffect extends StatusEffect {
   name = 'curse';
   icon = Icons.DeathCoil;
   interval?: NodeJS.Timeout;
-  timeout = 3000;
+  timeout = 1000000;//3000;
   start(enemy: Enemy) {
     super.start(enemy);
     let ticks = 0;
@@ -50,7 +50,7 @@ class CurseStatusEffect extends StatusEffect {
           this.stop();
           return;
         }
-        enemy.damage(5);
+        enemy.damage(0);
         ticks++;
       }, 1000);
     }
@@ -61,5 +61,4 @@ class CurseStatusEffect extends StatusEffect {
       clearInterval(this.interval);
     }
   }
-  addGameListener() { }
 }
