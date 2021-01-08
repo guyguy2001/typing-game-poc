@@ -1,5 +1,6 @@
 import Emitter from './event-emitter';
 import Enemy from './objects/enemy';
+import Icons from './icons';
 
 type Events = {
   onStop: StatusEffect;
@@ -38,5 +39,32 @@ export default abstract class StatusEffect {
 
   stop() {
     this.emitter.emit('onStop', this);
+  }
+}
+
+export class CurseStatusEffect extends StatusEffect {
+  name = 'curse';
+  icon = Icons.DeathCoil;
+  interval?: NodeJS.Timeout;
+  timeout = 5000;
+  start(enemy: Enemy) {
+    super.start(enemy);
+    let ticks = 0;
+    if (this.interval === undefined) {
+      this.interval = setInterval(() => {
+        if (enemy.isDead) {
+          this.stop();
+          return;
+        }
+        enemy.damage(5);
+        ticks++;
+      }, 1000);
+    }
+  }
+  stop() {
+    super.stop();
+    if (this.interval !== undefined) {
+      clearInterval(this.interval);
+    }
   }
 }

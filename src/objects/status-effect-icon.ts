@@ -1,4 +1,4 @@
-import StatusEffect from '../status-effect';
+import StatusEffect from '../status-effects';
 import textureManager from '../texture-manager';
 import Cooldown from './cooldown';
 

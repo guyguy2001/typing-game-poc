@@ -1,6 +1,6 @@
 import Emitter from './event-emitter';
 import Enemy from './objects/enemy';
-import StatusEffect from './status-effect';
+import StatusEffect from './status-effects';
 
 type Events = {
   onEffectStarted: StatusEffect;

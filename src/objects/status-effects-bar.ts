@@ -1,4 +1,4 @@
-import StatusEffect from 'new/status-effect';
+import StatusEffect from 'new/status-effects';
 import StatusEffectManager from 'new/status-effects-manager';
 import StatusEffectIcon from './status-effect-icon';
 

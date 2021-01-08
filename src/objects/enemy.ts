@@ -1,5 +1,5 @@
 import Emitter from '../event-emitter';
-import StatusEffect from '../status-effect';
+import StatusEffect from '../status-effects';
 import StatusEffectManager from '../status-effects-manager';
 import { STATUS_EFFECT_ICON_SIZE } from './status-effect-icon';
 import Healthbar from './health-bar';

@@ -24,11 +24,16 @@
         "strictPropertyInitialization": true,
         "strictNullChecks": true,
         "baseUrl": "./src",
+        "paths": {
+            "@": [
+                "src"
+            ]
+        }
     },
     "filesGlob": [
         "src/**/*.ts"
     ],
     "exclude": [
         "node_modules"
-    ]
+    ],
 }

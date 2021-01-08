@@ -1,9 +1,9 @@
 import Icons from './icons';
 import Enemy from './objects/enemy';
-import StatusEffect from './status-effect';
+import StatusEffect, { CurseStatusEffect } from './status-effects';
 
 export default abstract class Attack {
-  constructor(public key: string) {}
+  constructor(public key: string) { }
   public abstract damage: number;
   public abstract icon: string;
   public abstract cooldown: number;
@@ -33,32 +33,5 @@ export class Curse extends Attack {
   public attack(enemy: Enemy) {
     super.attack(enemy);
     enemy.addStatusEffect(new CurseStatusEffect());
-  }
-}
-
-class CurseStatusEffect extends StatusEffect {
-  name = 'curse';
-  icon = Icons.DeathCoil;
-  interval?: NodeJS.Timeout;
-  timeout = 5000;
-  start(enemy: Enemy) {
-    super.start(enemy);
-    let ticks = 0;
-    if (this.interval === undefined) {
-      this.interval = setInterval(() => {
-        if (enemy.isDead) {
-          this.stop();
-          return;
-        }
-        enemy.damage(5);
-        ticks++;
-      }, 1000);
-    }
-  }
-  stop() {
-    super.stop();
-    if (this.interval !== undefined) {
-      clearInterval(this.interval);
-    }
   }
 }

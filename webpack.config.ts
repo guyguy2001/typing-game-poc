@@ -1,7 +1,7 @@
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 import * as webpack from 'webpack';
 
-const path = require('path');
+import * as path from 'path';
 const publicFolder = 'public';
 
 // The files that will be exported using CopyWebpackPlugin
@@ -43,6 +43,9 @@ const config: webpack.Configuration = {
   resolve: {
     extensions: ['.ts', '.js'],
     modules: [path.resolve(path.join(__dirname, 'node_modules'))],
+    alias: {
+      '@': path.resolve('src'),
+    }
   },
   module: {
     rules: [
