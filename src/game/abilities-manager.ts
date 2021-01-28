@@ -1,5 +1,5 @@
 import State from './state';
-import InputConsumer from '@/objects/enemy';
+import InputConsumer from '../infrastructure/input-consumer';
 import Attack from './attack';
 
 type CallbackType = 'onAttackAdded';

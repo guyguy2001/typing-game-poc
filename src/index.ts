@@ -2,7 +2,7 @@
  * Created By Geani Pocroianu on 11/6/19 8:35 PM
  */
 
-import { MainView } from './new/main-view';
+import { MainView } from './game/main-view';
 
 export class Main {
   //private _facade: MainFacade;

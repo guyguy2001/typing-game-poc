@@ -1,5 +1,5 @@
-import StatusEffect from 'new/status-effects';
-import StatusEffectManager from 'new/status-effects-manager';
+import StatusEffect from '../game/status-effects';
+import StatusEffectManager from '../game/status-effects-manager';
 import StatusEffectIcon from './status-effect-icon';
 
 export default class StatusEffectsBar extends PIXI.Graphics {
@@ -32,7 +32,6 @@ export default class StatusEffectsBar extends PIXI.Graphics {
   }
 
   redraw() {
-    console.log(this.icons.length);
     this.icons.forEach(icon => icon.redraw());
   }
 }

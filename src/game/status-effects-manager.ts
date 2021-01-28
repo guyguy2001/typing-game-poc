@@ -1,5 +1,5 @@
-import Emitter from './event-emitter';
-import Enemy from './objects/enemy';
+import Emitter from '../infrastructure/event-emitter';
+import Enemy from '../objects/enemy';
 import StatusEffect from './status-effects';
 
 type Events = {

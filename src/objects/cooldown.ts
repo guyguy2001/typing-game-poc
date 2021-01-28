@@ -14,7 +14,6 @@ export default class Cooldown extends PIXI.Graphics {
     const shape = Cooldown.generateShape(cooldownPart).map(
       p => new PIXI.Point((p.x + 0.5) * this.icon_size, (p.y + 0.5) * this.icon_size)
     );
-    if (shape.length > 0) console.log(shape);
 
     this.beginFill(FILL, 0.4);
     this.drawPolygon(shape);

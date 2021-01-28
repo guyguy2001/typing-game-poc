@@ -1,5 +1,5 @@
-import StatusEffect from '../status-effects';
-import textureManager from '../texture-manager';
+import StatusEffect from '../game/status-effects';
+import textureManager from '../objects/texture-manager';
 import Cooldown from './cooldown';
 
 export const STATUS_EFFECT_ICON_SIZE = 30;

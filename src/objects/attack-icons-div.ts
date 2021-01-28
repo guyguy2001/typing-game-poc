@@ -1,12 +1,10 @@
-import Attack from 'new/attack';
+import Attack from '../game/attack';
 import AttackIcon from './attack-icon';
 
 export default class AttackIconsDiv extends PIXI.Graphics {
   icons: AttackIcon[] = [];
   public addAbilityIcon(attack: Attack) {
     const icon = new AttackIcon(attack);
-    console.log(this.icons);
-    console.log(icon._width * 1.25 * this.icons.length + 200);
     icon.position.set(icon._width * 1.25 * this.icons.length + 200, 0);
     this.addChild(icon);
 

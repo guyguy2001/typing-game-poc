@@ -8,17 +8,17 @@ import CanvasRenderer = PIXI.CanvasRenderer;
 
 import { Parameters } from '../static/parameters';
 
-import Player from './objects/player';
-import Enemy from './objects/enemy';
+import Player from '../objects/player';
+import Enemy from '../objects/enemy';
 import State from './state';
 import KeyboardManager from './keyboard-manager';
 
 import EnemySelector from './enemy-selector';
-import InputConsumer from './input-consumer';
+import InputConsumer from '../infrastructure/input-consumer';
 import Attack, { Firebolt } from './attack';
-import AttackIconsDiv from './objects/attack-icons-div';
+import AttackIconsDiv from '../objects/attack-icons-div';
 import { Curse } from './attack';
-import textureManager from './texture-manager';
+import textureManager from '../objects/texture-manager';  
 
 export const renderer = PIXI.autoDetectRenderer(
   window.innerWidth,

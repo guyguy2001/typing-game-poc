@@ -1,5 +1,5 @@
-import Attack from '../attack';
-import textureManager from '../texture-manager';
+import Attack from '../game/attack';
+import textureManager from '../objects/texture-manager';
 import Cooldown from './cooldown';
 
 export const ICON_SIZE = 60;

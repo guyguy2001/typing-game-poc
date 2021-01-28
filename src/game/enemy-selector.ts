@@ -1,4 +1,4 @@
-import InputConsumer from "./input-consumer";
+import InputConsumer from "../infrastructure/input-consumer";
 import State from "./state";
 
 const DEFAULT_SELECTOR_KEY = ' ';

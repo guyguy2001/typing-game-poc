@@ -1,6 +1,6 @@
-import Emitter from '../event-emitter';
-import StatusEffect from '../status-effects';
-import StatusEffectManager from '../status-effects-manager';
+import Emitter from '../infrastructure/event-emitter';
+import StatusEffect from '../game/status-effects';
+import StatusEffectManager from '../game/status-effects-manager';
 import { STATUS_EFFECT_ICON_SIZE } from './status-effect-icon';
 import Healthbar from './health-bar';
 import StatusEffectsBar from './status-effects-bar';

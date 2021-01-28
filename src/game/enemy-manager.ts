@@ -1,4 +1,4 @@
-import Enemy from './objects/enemy';
+import Enemy from '../objects/enemy';
 import State from './state';
 
 export default class EnemyManager {

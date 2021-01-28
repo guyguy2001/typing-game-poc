@@ -22,14 +22,6 @@ let assetsToCopy = [
     from: path.join(__dirname, 'node_modules/pixi.js/dist/pixi.min.js'),
     to: path.join(__dirname, publicFolder, 'js'),
   },
-  {
-    from: path.join(__dirname, 'node_modules/pixi-spine/bin/pixi-spine.js'),
-    to: path.join(__dirname, publicFolder, 'js'),
-  },
-  {
-    from: path.join(__dirname, 'node_modules/puremvc/lib/puremvc-1.0.1.js'),
-    to: path.join(__dirname, publicFolder, 'js'),
-  },
 ];
 
 const config: webpack.Configuration = {

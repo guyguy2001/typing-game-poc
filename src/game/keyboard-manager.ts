@@ -1,7 +1,7 @@
 //TODO: each feature which uses the keyboard (pausing, selecting an enemy, etc.) should register itself,
 // and a for loop will look at all of them
 
-import Enemy from './objects/enemy';
+import Enemy from '../objects/enemy';
 import State from './state';
 import Attack from './attack';
 
