@@ -1,0 +1,1 @@
+export const WORD_SELECTION = false;

@@ -4,6 +4,8 @@ import StatusEffectManager from '../game/status-effects-manager';
 import { STATUS_EFFECT_ICON_SIZE } from './status-effect-icon';
 import Healthbar from './health-bar';
 import StatusEffectsBar from './status-effects-bar';
+import WordSelectorText from './word-selector-text';
+import { WORD_SELECTION } from '../game/config';
 
 const REGULAR_FILL = 0x444444;
 const SELECTED_FILL = 0x329e2e;
@@ -17,7 +19,7 @@ type Events = {
 };
 
 export default class Enemy extends PIXI.Graphics {
-  textObject: PIXI.Text;
+  textObject: PIXI.Text | WordSelectorText;
   healthBar: Healthbar;
   statusEffectsBar: StatusEffectsBar;
   _fill: number = REGULAR_FILL;
@@ -37,7 +39,11 @@ export default class Enemy extends PIXI.Graphics {
 
   constructor(public selector: string) {
     super();
-    this.textObject = new PIXI.Text(selector, { fill: 0xffffff });
+    if (WORD_SELECTION) {
+      this.textObject = new WordSelectorText(selector);
+    } else {
+      this.textObject = new PIXI.Text(selector, { fill: 0xffffff });
+    }
     this.addChild(this.textObject);
 
     this.healthBar = new Healthbar(ENEMY_SIZE * 2, ENEMY_MAX_HP);
@@ -57,8 +63,10 @@ export default class Enemy extends PIXI.Graphics {
     this.drawCircle(0, 0, ENEMY_SIZE);
     this.endFill();
 
-    this.textObject.anchor.x = 0.5;
-    this.textObject.anchor.y = 0.5;
+    if (this.textObject instanceof PIXI.Text) {
+      this.textObject.anchor.x = 0.5;
+      this.textObject.anchor.y = 0.5;
+    }
     this.textObject.position.set(0, 0); //this.width / 2, this.height / 2);
 
     this.statusEffectsBar.redraw();

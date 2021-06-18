@@ -7,7 +7,6 @@ export default class State {
   selectors = 'abcdefghijklmnopqrstuvwxyz'.split('');
   enemyManager = new EnemyManager(this);
   abilitiesManager = new AbilitiesManager(this);
-  isSelecting = false;
   selectedEnemy?: Enemy;
   player!: Player;
 }

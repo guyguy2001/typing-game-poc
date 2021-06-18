@@ -11,14 +11,16 @@ import { Parameters } from '../static/parameters';
 import Player from '../objects/player';
 import Enemy from '../objects/enemy';
 import State from './state';
-import KeyboardManager from './keyboard-manager';
 
-import EnemySelector from './enemy-selector';
+import CharacterEnemySelector from './character-enemy-selector';
 import InputConsumer from '../infrastructure/input-consumer';
-import Attack, { Firebolt } from './attack';
+// import Attack, { Firebolt } from './attack';
 import AttackIconsDiv from '../objects/attack-icons-div';
-import { Curse } from './attack';
+import { Curse, Firebolt } from './attack';
 import textureManager from '../objects/texture-manager';  
+import wordSelector from './word-selector';
+import { getRandomWord } from '../utils/random-words';
+import { WORD_SELECTION } from './config';
 
 export const renderer = PIXI.autoDetectRenderer(
   window.innerWidth,
@@ -31,7 +33,6 @@ export class MainView {
   private _pixiRenderer: WebGLRenderer | CanvasRenderer;
 
   private state: State;
-  private keyboardManager: KeyboardManager;
   private iconDiv: AttackIconsDiv;
   private textureManager = textureManager;
 
@@ -41,7 +42,6 @@ export class MainView {
    */
   constructor() {
     this.state = new State();
-    this.keyboardManager = new KeyboardManager(this.state);
 
     this._pixiRenderer = renderer;
     document.body.appendChild(this._pixiRenderer.view);
@@ -53,20 +53,26 @@ export class MainView {
       this._pixiRenderer.height * 0.8
     );
     this._pixiStage.addChild(this.iconDiv);
-    this.state.abilitiesManager.addGameListener('onAttackAdded', attack =>
-      this.iconDiv.addAbilityIcon(attack)
-    );
-    this.consumers = [
-      new EnemySelector(this.state),
-      this.state.abilitiesManager,
-    ];
+    this.state.abilitiesManager.emitter.on('onAttackAdded', attack => this.iconDiv.addAbilityIcon(attack));
+    if (WORD_SELECTION) {
+      this.consumers = [
+        wordSelector,
+      ];
+    }
+    else {
+      this.consumers = [
+        new CharacterEnemySelector(this.state),
+        this.state.abilitiesManager,
+      ];
+    }
 
     this.textureManager.loadTexture('firebolt', 'assets/FireBolt.png');
     this.textureManager.loadTexture('death-coil', 'assets/DeathCoil.png');
 
-    this.state.abilitiesManager.addAbility(new Firebolt('j'));
-    this.state.abilitiesManager.addAbility(new Curse('k'));
-
+    // TODO: Don't allow duplicate words
+    this.state.abilitiesManager.addAbility(new Firebolt(WORD_SELECTION ?  getRandomWord() : "j"));
+    this.state.abilitiesManager.addAbility(new Curse(WORD_SELECTION ? getRandomWord() : "k" ));
+    
     this.createPixiApplication();
     this.initializeGame();
     this.spawnEnemy();
@@ -91,7 +97,9 @@ export class MainView {
     const selectorIndex = Math.floor(
       Math.random() * this.state.selectors.length
     );
-    const enemy = new Enemy(this.state.selectors[selectorIndex]);
+    // TODO: Don't allow duplicate words; probably refactor this into a class that you request a name from
+    const selector = WORD_SELECTION ? getRandomWord() : this.state.selectors[selectorIndex];
+    const enemy = new Enemy(selector);
     this.state.selectors.splice(selectorIndex, 1);
     enemy.position.set(
       Math.random() * this._pixiRenderer.width,
@@ -106,23 +114,6 @@ export class MainView {
       if (consumer.onInput(e.key)) {
         break;
       }
-    }
-  }
-
-  private _onKeyDown(e: KeyboardEvent) {
-    const action = this.keyboardManager.handleKey(e.key);
-    switch (action.action) {
-      case 'select-enemy':
-        this.state.selectedEnemy?.onDeselcted();
-        action.enemy.onSelected();
-        this.state.selectedEnemy = action.enemy;
-        this.state.isSelecting = false;
-        break;
-      case 'start-select':
-        this.state.isSelecting = true;
-        break;
-      case 'pause':
-        break;
     }
   }
 

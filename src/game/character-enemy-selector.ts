@@ -3,21 +3,23 @@ import State from "./state";
 
 const DEFAULT_SELECTOR_KEY = ' ';
 
-export default class EnemySelector implements InputConsumer {
+export default class CharacterEnemySelector implements InputConsumer {
+    isSelecting = false;
+
     constructor(private state: State) { }
 
     onInput(key: string) {
-        if (this.state.isSelecting) {
+        if (this.isSelecting) {
             if (key in this.state.enemyManager.enemiesBySelector){
                 this.state.selectedEnemy?.onDeselcted();
                 this.state.selectedEnemy = this.state.enemyManager.enemiesBySelector[key];
                 this.state.selectedEnemy.onSelected();
             }
-            this.state.isSelecting = false;
+            this.isSelecting = false;
             return true;
         } else {
             if (key === DEFAULT_SELECTOR_KEY){
-                this.state.isSelecting = true;
+                this.isSelecting = true;
                 return true;
             }
         }

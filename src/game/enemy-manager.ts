@@ -1,5 +1,6 @@
 import Enemy from '../objects/enemy';
 import State from './state';
+import wordSelector from '../game/word-selector';
 
 export default class EnemyManager {
   enemies: Enemy[] = [];
@@ -11,6 +12,15 @@ export default class EnemyManager {
     enemy.emitter.on('onDeath', enemy => this.removeEnemy(enemy));
     this.enemies.push(enemy);
     this.enemiesBySelector[enemy.selector] = enemy;
+    // TODO Refactor
+    wordSelector.emitter.on("finished", word => {
+      console.log("test");
+      if (word === enemy.selector) {
+          this.state.selectedEnemy?.onDeselcted();
+          this.state.selectedEnemy = enemy;
+          this.state.selectedEnemy.onSelected();
+      }
+    })
   }
   removeEnemy(enemy: Enemy) {
     this.enemies.splice(this.enemies.indexOf(enemy));

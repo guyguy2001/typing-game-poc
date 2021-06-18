@@ -1,6 +1,7 @@
 import Icons from '../static/icons';
 import Enemy from '../objects/enemy';
-import StatusEffect, { CurseStatusEffect } from './status-effects';
+import { CurseStatusEffect } from './status-effects';
+
 
 export default abstract class Attack {
   constructor(public key: string) { }
