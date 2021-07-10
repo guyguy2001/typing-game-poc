@@ -1,6 +1,7 @@
 import Emitter from '../infrastructure/event-emitter';
 import Enemy from '../objects/enemy';
 import Icons from '../static/icons';
+import { TIME_MULTIPLIER } from './config';
 
 type Events = {
   onStop: StatusEffect;
@@ -46,7 +47,7 @@ export class CurseStatusEffect extends StatusEffect {
   name = 'curse';
   icon = Icons.DeathCoil;
   interval?: NodeJS.Timeout;
-  timeout = 5000;
+  timeout = 5000 * TIME_MULTIPLIER;
   start(enemy: Enemy) {
     super.start(enemy);
     let ticks = 0;
@@ -58,7 +59,7 @@ export class CurseStatusEffect extends StatusEffect {
         }
         enemy.damage(5);
         ticks++;
-      }, 1000);
+      }, 1000 * TIME_MULTIPLIER);
     }
   }
   stop() {

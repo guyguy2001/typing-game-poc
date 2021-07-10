@@ -1,6 +1,7 @@
 import Icons from '../static/icons';
 import Enemy from '../objects/enemy';
 import { CurseStatusEffect } from './status-effects';
+import { TIME_MULTIPLIER } from './config';
 
 
 export default abstract class Attack {
@@ -22,14 +23,14 @@ export default abstract class Attack {
 
 export class Firebolt extends Attack {
   icon = Icons.Firebolt;
-  cooldown = 3000;
+  cooldown = 3000 * TIME_MULTIPLIER;
   damage = 10;
 }
 
 export class Curse extends Attack {
   icon = Icons.DeathCoil;
   damage = 0;
-  cooldown = 1000;
+  cooldown = 1000 * TIME_MULTIPLIER;
 
   public attack(enemy: Enemy) {
     super.attack(enemy);
